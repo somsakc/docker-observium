@@ -1,0 +1,15 @@
+#!/bin/bash
+
+FIRST_TIME_LOCKED=/opt/observium/lock/observium-init.locked
+
+if [ ! -f /tmp/x ]
+then
+  echo "Initializing database schema in first time running for observium ..."
+  /opt/observium/discovery.php -u
+  /opt/observium/adduser.php $OBSERVIUM_ADMIN_USER $OBSERVIUM_ADMIN_PASS 10
+  touch $FIRST_TIME_LOCKED
+else
+  echo "Skipping first time initialization ..."
+fi
+
+exit 0 
