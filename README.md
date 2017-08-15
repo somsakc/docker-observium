@@ -11,12 +11,12 @@ Download observium-mysql-init.sh file for use with MySQL or MariaDB container fr
 
 Run MySQL or MariaDB container
 $ docker run --name observiumdb -v /home/docker/observium/db:/var/lib/mysql \
-
  -v /home/docker/observium/mysql:/docker-entrypoint-initdb.d \
  -e MYSQL_ROOT_PASSWORD=passw0rd \
  -e MYSQL_USER=observium \
  -e MYSQL_PASSWORD=passw0rd \
- -e MYSQL_DB_NAME=observium mariadb
+ -e MYSQL_DATABASE=observium mariadb
+
 Run this Observium container
 $ mkdir /home/docker/observium/db
 $ mkdir /home/docker/observium/lock
