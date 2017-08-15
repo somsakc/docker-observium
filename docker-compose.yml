@@ -9,7 +9,7 @@ services:
        image: mariadb:latest
        environment:
          - MYSQL_ROOT_PASSWORD=passw0rd
-         - MYSQL_DB_NAME=observium
+         - MYSQL_DATABASE=observium
          - MYSQL_USER=observium
          - MYSQL_PASSWORD=passw0rd
        volumes:
