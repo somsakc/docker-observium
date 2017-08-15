@@ -1,11 +1,11 @@
-Docker container for Observium Community Edition
+# Docker container for Observium Community Edition
 
 It requires option of e.g. '--link observiumdb:observiumdb' with another MySQL or MariaDB container
 
-Usage:
+## Usage:
 Either follow the choice A. or B. below to run Observium.
 
-A. Manual Run Containers
+### A. Manual Run Containers
 
 Download observium-mysql-init.sh file for use with MySQL or MariaDB container from https://github.com/somsakc/observium. Place it under e.g. /home/docker/observium/mysql directory.
 
@@ -30,7 +30,8 @@ $ docker run --name observiumapp -it --link observiumdb:observiumdb \
  -e OBSERVIUM_DB_PASS=passw0rd \
  -e OBSERVIUM_DB_NAME=observium \
  -p 80:80 somsakc/observium
-B. Use Docker Composer
+ 
+### B. Use Docker Composer
 
 Download observium-mysql-init.sh file for use with MySQL or MariaDB container and docker-compose.yml file from https://github.com/somsakc/observium.
 
@@ -46,4 +47,8 @@ Place observium-mysql-init.sh into /home/docker/mysql directory.
 And let's go on current directory of /home/docker ...
 $ docker-compose up
 
+## Changes
+- Corrected MYSQL_DB_NAME environment variable of database container to be MYSQL_DATABASE instead (enforced by official mariadb image).
+
+## Source Repository
 See source of project at https://github.com/somsakc/observium
