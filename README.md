@@ -20,9 +20,9 @@ $ docker run --name observiumdb -v /home/docker/observium/db:/var/lib/mysql \
 Run this Observium container
 $ mkdir /home/docker/observium/db
 $ mkdir /home/docker/observium/lock
-$ docker run --name observiumapp -it --link observiumdb:observiumdb \
-
- -v /home/docker/observium/lock:/opt/observium/lock \
+$ docker run --name observiumapp --link observiumdb:observiumdb \
+ -v /home/docker/observium/logs:/opt/observium/logs \
+ -v /home/docker/observium/rrd:/opt/observium/rrd \
  -e OBSERVIUM_ADMIN_USER=admin \
  -e OBSERVIUM_ADMIN_PASS=passw0rd \
  -e OBSERVIUM_DB_HOST=observiumdb \
@@ -48,7 +48,9 @@ And let's go on current directory of /home/docker ...
 $ docker-compose up
 
 ## Changes
-- Corrected MYSQL_DB_NAME environment variable of database container to be MYSQL_DATABASE instead (enforced by official mariadb image).
+- Corrected error of "DB Error 1044: Access denied for user 'observium'@'%' to database 'observium'" by replacing MYSQL_DB_NAME environment variable of database container with MYSQL_DATABASE instead (regarding environment definition changed by official mariadb image).
+- Add Observium image available on Raspberri Pi 2/3 (arm32v7) platform.
 
 ## Source Repository
 See source of project at https://github.com/somsakc/observium
+

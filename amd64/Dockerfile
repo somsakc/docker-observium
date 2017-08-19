@@ -1,18 +1,20 @@
 # Docker container for Observium Community Edition
 #
-# It requires option of e.g. '--link observiumdb:observiumdb' with another MySQL or MariaDB container
+# It requires option of e.g. '--link observiumdb:observiumdb' with another MySQL or MariaDB container.
 # Example usage:
 # 1. MySQL or MariaDB container
-#    $ docker run --name observiumdb -v /home/docker/observium/db:/var/lib/mysql \
-#        -v /home/docker/observium/mysql:/docker-entrypoint-initdb.d \
+#    $ docker run --name observiumdb \
+#        -v /home/docker/observium/data:/var/lib/mysql \
 #        -e MYSQL_ROOT_PASSWORD=passw0rd \
 #        -e MYSQL_USER=observium \
 #        -e MYSQL_PASSWORD=passw0rd \
-#        -e MYSQL_DB_NAME=observium mariadb
+#        -e MYSQL_DATABASE=observium \
+#        mariadb
 #
 # 2. This Observium container
-#    $ docker run --name observiumapp -it --link observiumdb:observiumdb \
-#        -v /home/docker/observium/lock:/opt/observium/lock \
+#    $ docker run --name observiumapp --link observiumdb:observiumdb \
+#        -v /home/docker/observium/logs:/opt/observium/logs \
+#        -v /home/docker/observium/rrd:/opt/observium/rrd \
 #        -e OBSERVIUM_ADMIN_USER=admin \
 #        -e OBSERVIUM_ADMIN_PASS=passw0rd \
 #        -e OBSERVIUM_DB_HOST=observiumdb \
@@ -20,11 +22,15 @@
 #        -e OBSERVIUM_DB_PASS=passw0rd \
 #        -e OBSERVIUM_DB_NAME=observium \
 #        -p 80:80 somsakc/observium
+#
+# References:
+#  - Follow platform guideline specified in https://github.com/docker-library/official-images
+# 
 
 FROM ubuntu:16.04
 
 LABEL maintainer "somsakc@hotmail.com"
-LABEL version="1.0"
+LABEL version="1.1"
 LABEL description="Docker container for Observium Community Edition"
 
 ARG OBSERVIUM_ADMIN_USER=admin
@@ -42,9 +48,6 @@ ENV OBSERVIUM_DB_USER=$OBSERVIUM_DB_USER
 ENV OBSERVIUM_DB_PASS=$OBSERVIUM_DB_PASS
 ENV OBSERVIUM_DB_NAME=$OBSERVIUM_DB_NAME
 
-# set locale
-RUN locale-gen en_US.UTF-8
-
 # install prerequisites
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get update
@@ -52,8 +55,11 @@ RUN apt-get install -y libapache2-mod-php7.0 php7.0-cli php7.0-mysql php7.0-mysq
       php-pear snmp fping mysql-client python-mysqldb rrdtool subversion whois mtr-tiny ipmitool \
       graphviz imagemagick apache2
 RUN apt-get install -y libvirt-bin
-RUN apt-get install -y cron supervisor wget
+RUN apt-get install -y cron supervisor wget locales
 RUN apt-get clean
+
+# set locale
+RUN locale-gen en_US.UTF-8
 
 # install observium package
 RUN mkdir -p /opt/observium /opt/observium/lock /opt/observium/logs /opt/observium/rrd
@@ -94,7 +100,11 @@ COPY observium-apache24 /etc/apache2/sites-available/000-default.conf
 RUN rm -fr /var/www
 
 # configure observium cron job
-COPY observium-cron /etc/cron.d/observium
+#COPY observium-cron /etc/cron.d/observium
+COPY observium-cron /tmp/observium
+RUN echo "" >> /etc/crontab && \
+    cat /tmp/observium >> /etc/crontab && \
+    rm -f /tmp/observium
 
 # configure container interfaces
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf

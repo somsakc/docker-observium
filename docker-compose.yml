@@ -1,6 +1,5 @@
 # Observium and MariaDB container
 # Maintained by somsakc@hotmail.com
-# See update at https://github.com/somsakc/observium
 
 version: '2'
 
@@ -9,12 +8,13 @@ services:
        image: mariadb:latest
        environment:
          - MYSQL_ROOT_PASSWORD=passw0rd
-         - MYSQL_DATABASE=observium
          - MYSQL_USER=observium
          - MYSQL_PASSWORD=passw0rd
+         - MYSQL_DATABASE=observium
+         - TZ=Asia/Bangkok
        volumes:
-         - /home/docker/observium/db:/var/lib/mysql
-         - /home/docker/observium/mysql:/docker-entrypoint-initdb.d
+         - /home/docker/observium/data:/var/lib/mysql
+#         - /home/docker/observium/mysql:/docker-entrypoint-initdb.d
        networks:
          - back-tier
        restart: always
@@ -28,8 +28,11 @@ services:
          - OBSERVIUM_DB_NAME=observium
          - OBSERVIUM_DB_USER=observium 
          - OBSERVIUM_DB_PASS=passw0rd
+         - TZ=Asia/Bangkok
        volumes:
-         - /home/docker/observium/lock:/opt/observium/lock
+         - /home/docker/observium/logs:/opt/observium/logs
+#         - /home/docker/observium/lock:/opt/observium/lock
+         - /home/docker/observium/rrd:/opt/observium/rrd
        networks:
          - back-tier
        ports:

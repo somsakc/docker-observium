@@ -1,0 +1,14 @@
+# Run a complete discovery of all devices once every 6 hours
+33  */6   * * *   root    . /opt/observium/observium-setenv.sh && /opt/observium/discovery.php -h all >> /dev/null 2>&1
+
+# Run automated discovery of newly added devices every 5 minutes
+*/5 *     * * *   root    . /opt/observium/observium-setenv.sh && /opt/observium/discovery.php -h new >> /dev/null 2>&1
+
+# Run multithreaded poller wrapper every 5 minutes
+*/5 *     * * *   root    . /opt/observium/observium-setenv.sh && /opt/observium/poller-wrapper.py 4 >> /dev/null 2>&1
+
+# Run housekeeping script daily for syslog, eventlog and alert log
+13 5      * * *   root    . /opt/observium/observium-setenv.sh && /opt/observium/housekeeping.php -ysel >> /dev/null 2>&1
+
+# Run housekeeping script daily for rrds, ports, orphaned entries in the database and performance data
+47 4      * * *   root    . /opt/observium/observium-setenv.sh && /opt/observium/housekeeping.php -yrptb >> /dev/null 2>&1
