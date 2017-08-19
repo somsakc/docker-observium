@@ -1,0 +1,47 @@
+# Observium and MariaDB container
+# Maintained by somsakc@hotmail.com
+
+version: '2'
+
+services:
+  observiumdb:
+       image: jsurf/rpi-mariadb
+       environment:
+         - MYSQL_ROOT_PASSWORD=passw0rd
+         - MYSQL_USER=observium
+         - MYSQL_PASSWORD=passw0rd
+         - MYSQL_DATABASE=observium
+         - TZ=Asia/Bangkok
+       volumes:
+         - /home/docker/observium/data:/var/lib/mysql
+#         - /home/docker/observium/mysql:/docker-entrypoint-initdb.d
+       networks:
+         - back-tier
+       restart: always
+
+  observiumap:
+       image: mbixtech/arm32v7-observium
+       environment:
+         - OBSERVIUM_ADMIN_USER=admin
+         - OBSERVIUM_ADMIN_PASS=passw0rd
+         - OBSERVIUM_DB_HOST=observiumdb
+         - OBSERVIUM_DB_NAME=observium
+         - OBSERVIUM_DB_USER=observium 
+         - OBSERVIUM_DB_PASS=passw0rd
+         - TZ=Asia/Bangkok
+       volumes:
+         - /home/docker/observium/logs:/opt/observium/logs
+#         - /home/docker/observium/lock:/opt/observium/lock
+         - /home/docker/observium/rrd:/opt/observium/rrd
+       networks:
+         - back-tier
+       ports:
+         - "80:80"
+       restart: always
+       depends_on:
+         - observiumdb
+
+networks:
+  back-tier:
+      driver: bridge
+

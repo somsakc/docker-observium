@@ -1,0 +1,39 @@
+#!/bin/bash
+
+FIRST_TIME_LOCKED=/opt/observium/lock/observium-init.locked
+
+if [ ! -f $FIRST_TIME_LOCKED ]
+then
+  echo "Connecting to Observium database container ..."
+  count=0
+  rc=1
+  while [ $count -lt 12 -a $rc -ne 0 ]
+  do
+     echo "select 1" | mysql -h $OBSERVIUM_DB_HOST -u $OBSERVIUM_DB_USER --password=$OBSERVIUM_DB_PASS $OBSERVIUM_DB_NAME
+     rc=$?
+     [ $rc -ne 0 ] && sleep 5
+     count=`expr $count + 1`
+  done
+
+  if [ $rc -eq 0 ]
+  then
+     echo "Initializing database schema in first time running for observium ..."
+     /opt/observium/discovery.php -u
+     /opt/observium/adduser.php $OBSERVIUM_ADMIN_USER $OBSERVIUM_ADMIN_PASS 10
+     touch $FIRST_TIME_LOCKED
+  else
+     echo "Skipping initializing database ..."
+  fi
+
+else
+  echo "Database schema initialization has been done already ..."
+fi
+
+echo "export OBSERVIUM_ADMIN_USER=$OBSERVIUM_ADMIN_USER" >> /opt/observium/observium-setenv.sh
+echo "export OBSERVIUM_ADMIN_PASS=$OBSERVIUM_ADMIN_PASS" >> /opt/observium/observium-setenv.sh
+echo "export OBSERVIUM_DB_HOST=$OBSERVIUM_DB_HOST" >> /opt/observium/observium-setenv.sh
+echo "export OBSERVIUM_DB_USER=$OBSERVIUM_DB_USER" >> /opt/observium/observium-setenv.sh
+echo "export OBSERVIUM_DB_PASS=$OBSERVIUM_DB_PASS" >> /opt/observium/observium-setenv.sh
+echo "export OBSERVIUM_DB_NAME=$OBSERVIUM_DB_NAME" >> /opt/observium/observium-setenv.sh
+
+exit 0
