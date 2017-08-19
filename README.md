@@ -1,6 +1,6 @@
 # Docker container for Observium Community Edition
 
-## Usage:
+## Usage
 Either follow the choice A. or B. below to run Observium.
 
 ### A. Manual Run Containers
