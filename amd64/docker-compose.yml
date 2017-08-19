@@ -20,7 +20,7 @@ services:
        restart: always
 
   observiumap:
-       image: somsakc/observium
+       image: mbixtech/observium
        environment:
          - OBSERVIUM_ADMIN_USER=admin
          - OBSERVIUM_ADMIN_PASS=passw0rd
