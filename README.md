@@ -1,6 +1,10 @@
 # Docker container for Observium Community Edition
 Observium is network monitoring with intuition. It is a low-maintenance auto-discovering network monitoring platform supporting a wide range of device types, platforms and operating systems including Cisco, Windows, Linux, HP, Juniper, Dell, FreeBSD, Brocade, Netscaler, NetApp and many more. Observium focuses on providing a beautiful and powerful yet simple and intuitive interface to the health and status of your network. For more information, go to http://www.observium.org site.
 
+Available platform are:-
+* AMD64 (Intel x86_64) https://hub.docker.com/r/mbixtech/observium/
+* ARM32v7 (Raspberri Pi 2/3) https://hub.docker.com/r/mbixtech/arm32v7-observium/
+
 ## Usage
 Either follow the choice A. or B. below to run Observium.
 
@@ -38,6 +42,8 @@ Either follow the choice A. or B. below to run Observium.
     -p 80:80
     mbixtech/observium
 ```
+
+> Note: You must replace passwords specified in environment parameters of both containers with your secure passwords instead.
 
 ### B. Use Docker Composer
 - Follow instuctions below to create extra working directory of docker containers.
