@@ -13,18 +13,19 @@ pipeline {
             sh 'set | grep -e BUILD -e JENKINS'
           }
         }
-        stage('change working path') {
+        stage('verify work path') {
           steps {
             sh '''pwd
-find . -ls
-cd amd64'''
+ls -l'''
           }
         }
       }
     }
     stage('build docker') {
       steps {
-        sh 'docker build --no-cache -t mbixtech/observium:jenkins-${BUILD_NUMBER} .'
+        sh '''cd amd64
+ls -l
+docker build --no-cache -t mbixtech/observium:jenkins-${BUILD_NUMBER} .'''
       }
     }
     stage('verify docker') {
