@@ -6,12 +6,14 @@ pipeline {
     
   }
   stages {
-    stage('') {
+    stage('build docker') {
       steps {
-        sh '''pwd
-cd amd64
-docker build --no-cache .
-docker images'''
+        timestamps() {
+          sh '''#!/bin/bash
+
+set'''
+        }
+        
       }
     }
   }
