@@ -6,14 +6,30 @@ pipeline {
     
   }
   stages {
+    stage('verify envs') {
+      parallel {
+        stage('verify envs') {
+          steps {
+            sh 'set | grep -e BUILD -e JENKINS'
+          }
+        }
+        stage('change working path') {
+          steps {
+            sh '''pwd
+find . -ls
+cd amd64'''
+          }
+        }
+      }
+    }
     stage('build docker') {
       steps {
-        timestamps() {
-          sh '''#!/bin/bash
-
-set'''
-        }
-        
+        sh 'docker build --no-cache -t mbixtech/observium:jenkins-${BUILD_NUMBER} .'
+      }
+    }
+    stage('verify docker') {
+      steps {
+        sh 'docker images'
       }
     }
   }
