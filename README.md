@@ -38,12 +38,15 @@ Either follow the choice A. or B. below to run Observium.
     -e OBSERVIUM_DB_USER=observium \
     -e OBSERVIUM_DB_PASS=passw0rd \
     -e OBSERVIUM_DB_NAME=observium \
+    -e OBSERVIUM_BASE_URL=http://yourserver.yourdomain:8080 \
     -e TZ=Asia/Bangkok
-    -p 80:80
+    -p 8080:80
     mbixtech/observium
 ```
 
-> Note: You must replace passwords specified in environment parameters of both containers with your secure passwords instead.
+> Note:
+> - You must replace passwords specified in environment parameters of both containers with your secure passwords instead.
+> - OBSERVIUM_BASE_URL supports AMD64 container only (plan to support ARM32v7 soon).
 
 ### B. Use Docker Composer
 - Follow instuctions below to create extra working directory of docker containers.
