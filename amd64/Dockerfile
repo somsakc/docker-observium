@@ -21,7 +21,8 @@
 #        -e OBSERVIUM_DB_USER=observium \
 #        -e OBSERVIUM_DB_PASS=passw0rd \
 #        -e OBSERVIUM_DB_NAME=observium \
-#        -p 80:80 somsakc/observium
+#        -e OBSERVIUM_BASE_URL=http://yourserver.yourdomain:80 \
+#        -p 80:80 mbixtech/observium
 #
 # References:
 #  - Follow platform guideline specified in https://github.com/docker-library/official-images
@@ -30,7 +31,7 @@
 FROM ubuntu:16.04
 
 LABEL maintainer "somsakc@hotmail.com"
-LABEL version="1.1"
+LABEL version="1.2"
 LABEL description="Docker container for Observium Community Edition"
 
 ARG OBSERVIUM_ADMIN_USER=admin
@@ -68,13 +69,17 @@ RUN cd /opt && \
     tar zxvf observium-community-latest.tar.gz && \
     rm observium-community-latest.tar.gz
 
+# check version
+RUN [ -f /opt/observium/VERSION ] && cat /opt/observium/VERSION
+
 # configure observium package
 RUN cd /opt/observium && \
     cp config.php.default config.php && \
     sed -i -e "s/= 'localhost';/= getenv('OBSERVIUM_DB_HOST');/g" config.php && \
     sed -i -e "s/= 'USERNAME';/= getenv('OBSERVIUM_DB_USER');/g" config.php && \
     sed -i -e "s/= 'PASSWORD';/= getenv('OBSERVIUM_DB_PASS');/g" config.php && \
-    sed -i -e "s/= 'observium';/= getenv('OBSERVIUM_DB_NAME');/g" config.php
+    sed -i -e "s/= 'observium';/= getenv('OBSERVIUM_DB_NAME');/g" config.php && \
+    echo "\$config['base_url'] = getenv('OBSERVIUM_BASE_URL');" >> config.php
 
 COPY observium-init /opt/observium/observium-init.sh
 RUN chmod a+x /opt/observium/observium-init.sh

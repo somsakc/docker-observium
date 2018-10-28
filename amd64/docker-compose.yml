@@ -1,7 +1,7 @@
 # Observium and MariaDB container
 # Maintained by somsakc@hotmail.com
 
-version: '2'
+version: '3'
 
 services:
   observiumdb:
@@ -28,6 +28,7 @@ services:
          - OBSERVIUM_DB_NAME=observium
          - OBSERVIUM_DB_USER=observium 
          - OBSERVIUM_DB_PASS=passw0rd
+         - OBSERVIUM_BASE_URL=http://observium.mbixtech.com:8888
          - TZ=Asia/Bangkok
        volumes:
          - /home/docker/observium/logs:/opt/observium/logs
@@ -36,7 +37,7 @@ services:
        networks:
          - back-tier
        ports:
-         - "80:80"
+         - "8888:80"
        restart: always
        depends_on:
          - observiumdb
