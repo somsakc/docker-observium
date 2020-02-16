@@ -65,9 +65,17 @@ Either follow the choice A. or B. below to run Observium.
 ```
 
 ## Changes
-- Corrected error of "DB Error 1044: Access denied for user 'observium'@'%' to database 'observium'" by replacing MYSQL_DB_NAME environment variable of database container with MYSQL_DATABASE instead (regarding environment definition changed by official mariadb image).
-- Revised docker-compose.yml file and Dockerfile files.
-- Add Observium image available on Raspberri Pi 2/3 (arm32v7) platform.
+- [2020-02-16] Enhanced docker image with Observium CE 19.8.10000
+  - Revised initial/kickstart script for first time of container running with more information about database initialization.
+  - Moved Apache http access and error logs to /opt/observium/logs directory.
+  - Added logs of all cron jobs storing in /opt/observium/logs directory. 
+  - Added logrotate for rotating logs in /opt/observium/logs directory.
+  - Chnaged working directory of container image to /opt/observium for ease of managing Observium inside.
+  - Fixed invalid cron parameter specified in supervisord.conf.
+  - Revised Dockerfile file.
+- [2018-10-28] Added 'Feature request: OBSERVIUM_BASE_URL #3' feature.
+- [2017-08-19] Corrected error of "DB Error 1044: Access denied for user 'observium'@'%' to database 'observium'" by replacing MYSQL_DB_NAME environment variable of database container with MYSQL_DATABASE instead (regarding environment definition changed by official mariadb image).
+- [2017-08-19] Add Observium image available on Raspberri Pi 2/3 (arm32v7) platform.
 
 ## Source Repository
 See source of project at https://github.com/somsakc/observium
