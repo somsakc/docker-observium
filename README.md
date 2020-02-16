@@ -52,8 +52,8 @@ Either follow the choice A. or B. below to run Observium.
 - Follow instuctions below to create extra working directory of docker containers.
 ```
   $ mkdir /home/docker/observium
-  $ cd observium
-  $ mkdir db lock mysql
+  $ cd /home/docker/observium
+  $ mkdir data logs mysql
 ```
 > You can change /home/docker directory to your desired directory and you need to change the volume mapping directories in docker-compose.yml file also.
 
@@ -71,3 +71,7 @@ Either follow the choice A. or B. below to run Observium.
 
 ## Source Repository
 See source of project at https://github.com/somsakc/observium
+
+## Credits
+- Official Observium web site [https://www.observium.org]
+- Ubuntu installation from Observium web site [https://docs.observium.org/install_debian/]
