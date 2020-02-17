@@ -13,17 +13,17 @@ Either follow the choice A. or B. below to run Observium.
 ```
   $ mkdir /home/docker/observium
   $ cd /home/docker/observium
-  $ mkidr data logs rrd
+  $ mkdir data logs rrd
 ```
 - Run official MariaDB container
 ```
-  $ docker run --name observiumdb
+  $ docker run --name observiumdb \
     -v /home/docker/observium/data:/var/lib/mysql \
     -e MYSQL_ROOT_PASSWORD=passw0rd \
     -e MYSQL_USER=observium \
     -e MYSQL_PASSWORD=passw0rd \
-    -e MYSQL_DATABASE=observium
-    -e TZ=Asia/Bangkok
+    -e MYSQL_DATABASE=observium \
+    -e TZ=Asia/Bangkok \
     mariadb
 ```
 
@@ -39,23 +39,22 @@ Either follow the choice A. or B. below to run Observium.
     -e OBSERVIUM_DB_PASS=passw0rd \
     -e OBSERVIUM_DB_NAME=observium \
     -e OBSERVIUM_BASE_URL=http://yourserver.yourdomain:8080 \
-    -e TZ=Asia/Bangkok
-    -p 8080:80
+    -e TZ=Asia/Bangkok \
+    -p 8080:80 \
     mbixtech/observium
 ```
 
 > Note:
 > - You must replace passwords specified in environment parameters of both containers with your secure passwords instead.
-> - OBSERVIUM_BASE_URL supports AMD64 container only (plan to support ARM32v7 soon).
 
 ### B. Use Docker Composer
-- Follow instuctions below to create extra working directory of docker containers.
+- Follow instructions below to create extra working directory of docker containers.
 ```
   $ mkdir /home/docker/observium
   $ cd /home/docker/observium
-  $ mkdir data logs mysql
+  $ mkdir data logs rrd
 ```
-> You can change /home/docker directory to your desired directory and you need to change the volume mapping directories in docker-compose.yml file also.
+> You can change /home/docker/observium directory to your desired directory and you need to change the volume mapping directories in docker-compose.yml file also.
 
 - Download docker-compose.yml file from https://github.com/somsakc/observium github repository. Then, place docker-compose.yml file into /home/docker/observium directory.
 
