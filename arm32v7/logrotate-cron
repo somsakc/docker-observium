@@ -1,0 +1,7 @@
+# Cron for logrotate
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# Run logrotate by specific daily schedule
+9  0   * * *   root    /usr/sbin/logrotate -v /etc/logrotate.conf >/opt/observium/logs/.logrotate.log.swp 2>&1 && (echo "`date`: Rotating observium logs ..."; cat /opt/observium/logs/.logrotate.log.swp; echo "") >>/opt/observium/logs/logrotate.log 2>&1 && rm -f /opt/observium/logs/.logrotate.log.swp >/dev/null 2>&1
