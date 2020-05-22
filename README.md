@@ -11,9 +11,7 @@ Either follow the choice A. or B. below to run Observium.
 ### A. Manual Run Containers
 - Prepare working directory for docker containers, for example below.
 ```
-  $ mkdir /home/docker/observium
-  $ cd /home/docker/observium
-  $ mkidr data logs rrd
+  $ mkdir -p /home/docker/observium/{data,logs,rrd}
 ```
 - Run official MariaDB container
 ```
