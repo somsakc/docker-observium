@@ -30,7 +30,7 @@
 #  - Follow platform guideline specified in https://github.com/docker-library/official-images
 # 
 
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 LABEL maintainer "somsakc@hotmail.com"
 LABEL version="1.3"
@@ -44,8 +44,7 @@ ARG OBSERVIUM_DB_PASS=passw0rd
 ARG OBSERVIUM_DB_NAME=observium
 
 # set environment variables
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL C
 ENV OBSERVIUM_DB_HOST=$OBSERVIUM_DB_HOST
 ENV OBSERVIUM_DB_USER=$OBSERVIUM_DB_USER
 ENV OBSERVIUM_DB_PASS=$OBSERVIUM_DB_PASS
@@ -54,10 +53,34 @@ ENV OBSERVIUM_DB_NAME=$OBSERVIUM_DB_NAME
 # install prerequisites and cleanup
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get update && \
-    apt-get install -y libapache2-mod-php7.0 php7.0-cli php7.0-mysql php7.0-mysqli php7.0-gd php7.0-mcrypt php7.0-json php-pear snmp fping mysql-server mysql-client python-mysqldb rrdtool subversion whois mtr-tiny ipmitool graphviz imagemagick apache2 && \
-    apt-get install -y libvirt-bin && \
-    apt-get install -y cron locales supervisor wget && \
-    apt-get clean && \
+    apt-get -y dist-upgrade
+RUN apt install -y libapache2-mod-php7.4 \
+                   php7.4-cli \
+                   php7.4-mysql \
+                   php7.4-mysqli \
+                   php7.4-gd \
+                   php7.4-json \
+                   php-pear \
+                   snmp \
+                   fping \
+                   mysql-server \
+                   mysql-client \
+                   rrdtool \
+                   subversion \
+                   whois \
+                   mtr-tiny \
+                   ipmitool \
+                   graphviz \
+                   imagemagick \
+                   apache2 \
+                   python3-mysqldb \
+                   python3-pymysql \
+                   python-is-python3
+RUN apt-get install -y cron \
+                       locales \
+                       supervisor \
+                       wget
+RUN apt-get clean && \
     rm -f /etc/apache2/sites-available/* && \
     rm -f /etc/cron.d/* && \
     rm -f /etc/cron.hourly/* && \
@@ -98,14 +121,11 @@ RUN chmod a+x /opt/observium/observium-init.sh && \
 RUN [ -f /opt/observium/VERSION ] && cat /opt/observium/VERSION && \
     find /opt -ls
 
-# configure php modules
-RUN phpenmod mcrypt
-
 # configure apache configuration and modules
 COPY observium-apache24 /etc/apache2/sites-available/000-default.conf
 RUN a2dismod mpm_event && \
     a2enmod mpm_prefork && \
-    a2enmod php7.0 && \
+    a2enmod php7.4 && \
     a2enmod rewrite && \
     chmod 644 /etc/apache2/sites-available/000-default.conf && \
     sed -i -e "s/\${APACHE_LOG_DIR}\//\/opt\/observium\/logs\/apache2-/g" /etc/apache2/apache2.conf

@@ -25,6 +25,8 @@ then
    /opt/observium/adduser.php $OBSERVIUM_ADMIN_USER $OBSERVIUM_ADMIN_PASS 10
 else
   echo "Database schema initialization has been done already."
+  echo "Checking for database updates."
+  /opt/observium/discovery.php -u
   sleep 5
 fi
 
