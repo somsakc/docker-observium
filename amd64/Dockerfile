@@ -30,10 +30,10 @@
 #  - Follow platform guideline specified in https://github.com/docker-library/official-images
 # 
 
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 LABEL maintainer "somsakc@hotmail.com"
-LABEL version="1.3"
+LABEL version="1.4"
 LABEL description="Docker container for Observium Community Edition"
 
 ARG OBSERVIUM_ADMIN_USER=admin
@@ -54,9 +54,9 @@ ENV OBSERVIUM_DB_NAME=$OBSERVIUM_DB_NAME
 # install prerequisites and cleanup
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get update && \
-    apt-get install -y libapache2-mod-php7.0 php7.0-cli php7.0-mysql php7.0-mysqli php7.0-gd php7.0-mcrypt php7.0-json php-pear snmp fping mysql-server mysql-client python-mysqldb rrdtool subversion whois mtr-tiny ipmitool graphviz imagemagick apache2 && \
-    apt-get install -y libvirt-bin && \
-    apt-get install -y cron locales supervisor wget && \
+    apt-get install -y libapache2-mod-php7.4 php7.4-cli php7.4-mysql php7.4-mysqli php7.4-gd php7.4-json php-pear snmp fping mysql-server mysql-client python3-mysqldb rrdtool subversion whois mtr-tiny ipmitool graphviz imagemagick apache2 python3-pymysql python-is-python3 && \
+    apt-get install -y libvirt-clients && \
+    apt-get install -y cron curl locales supervisor wget && \
     apt-get clean && \
     rm -f /etc/apache2/sites-available/* && \
     rm -f /etc/cron.d/* && \
@@ -95,8 +95,9 @@ RUN chmod a+x /opt/observium/observium-init.sh && \
     chown -R www-data:www-data /opt/observium
 
 # check version and installed files
-RUN [ -f /opt/observium/VERSION ] && cat /opt/observium/VERSION && \
-    find /opt -ls
+RUN [ -f /opt/observium/VERSION ] && cat /opt/observium/VERSION
+#RUN [ -f /opt/observium/VERSION ] && cat /opt/observium/VERSION && \
+#    find /opt -ls
 
 # configure php modules
 RUN phpenmod mcrypt
@@ -105,7 +106,7 @@ RUN phpenmod mcrypt
 COPY observium-apache24 /etc/apache2/sites-available/000-default.conf
 RUN a2dismod mpm_event && \
     a2enmod mpm_prefork && \
-    a2enmod php7.0 && \
+    a2enmod php7.4 && \
     a2enmod rewrite && \
     chmod 644 /etc/apache2/sites-available/000-default.conf && \
     sed -i -e "s/\${APACHE_LOG_DIR}\//\/opt\/observium\/logs\/apache2-/g" /etc/apache2/apache2.conf

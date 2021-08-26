@@ -4,41 +4,41 @@
 version: '3'
 
 services:
-  observiumdb:
-       image: mariadb:latest
-       environment:
-         - MYSQL_ROOT_PASSWORD=passw0rd
-         - MYSQL_USER=observium
-         - MYSQL_PASSWORD=passw0rd
-         - MYSQL_DATABASE=observium
-         - TZ=Asia/Bangkok
-       volumes:
-         - ./data:/var/lib/mysql
-       networks:
-         - back-tier
-       restart: always
+  db:
+    image: mariadb:10.6.4
+    environment:
+      - MYSQL_ROOT_PASSWORD=passw0rd
+      - MYSQL_USER=observium
+      - MYSQL_PASSWORD=passw0rd
+      - MYSQL_DATABASE=observium
+      - TZ=Asia/Bangkok
+    volumes:
+      - ./data:/var/lib/mysql
+    networks:
+      - back-tier
+    restart: always
 
-  observiumap:
-       image: mbixtech/observium
-       environment:
-         - OBSERVIUM_ADMIN_USER=admin
-         - OBSERVIUM_ADMIN_PASS=passw0rd
-         - OBSERVIUM_DB_HOST=observiumdb
-         - OBSERVIUM_DB_NAME=observium
-         - OBSERVIUM_DB_USER=observium 
-         - OBSERVIUM_DB_PASS=passw0rd
-         - OBSERVIUM_BASE_URL=http://observium.mbixtech.com:8888
-         - TZ=Asia/Bangkok
-       volumes:
-         - ./logs:/opt/observium/logs
-         - ./rrd:/opt/observium/rrd
-       networks:
-         - back-tier
-       ports:
-         - "8888:80"
-       restart: always
-       depends_on:
-         - observiumdb
+  app:
+    image: mbixtech/observium:20.9
+    environment:
+      - OBSERVIUM_ADMIN_USER=admin
+      - OBSERVIUM_ADMIN_PASS=passw0rd
+      - OBSERVIUM_DB_HOST=db
+      - OBSERVIUM_DB_NAME=observium
+      - OBSERVIUM_DB_USER=observium 
+      - OBSERVIUM_DB_PASS=passw0rd
+      - OBSERVIUM_BASE_URL=http://observium.mbixtech.com:8888
+      - TZ=Asia/Bangkok
+    volumes:
+      - ./logs:/opt/observium/logs
+      - ./rrd:/opt/observium/rrd
+    networks:
+      - back-tier
+    ports:
+      - "8888:80"
+    restart: always
+    depends_on:
+      - db
 
 networks:
   back-tier:
