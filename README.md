@@ -48,23 +48,41 @@ Either follow the choice A. or B. below to run Observium.
 > - You must replace passwords specified in environment parameters of both containers with your secure passwords instead.
 > - OBSERVIUM_BASE_URL supports AMD64 container only (plan to support ARM32v7 soon).
 
+
 ### B. Use Docker Composer
-- Follow instuctions below to create extra working directory of docker containers.
+- Follow instuctions below to create extra working directory of docker containers (You can change /home/docker directory to your desired directory).
 ```
-  $ mkdir /home/docker/observium
-  $ cd /home/docker/observium
+  $ cd /home/docker
+  $ git clone https://github.com/somsakc/docker-observium.git observium
+  $ cd observium
   $ mkdir data logs mysql
 ```
-> You can change /home/docker directory to your desired directory and you need to change the volume mapping directories in docker-compose.yml file also.
+> Note: You do not need to clone whole git repository. You can download docker-compose.yml file and .env file file. Then, place both files into e.g. /home/docker/observium directory mentioned above.
 
-- Download docker-compose.yml file from https://github.com/somsakc/observium github repository. Then, place docker-compose.yml file into /home/docker/observium directory.
+- Change some environments to your appropreate values in docker-compose.yml file, e.g. OBSERVIUM_ADMIN_USER, OBSERVIUM_ADMIN_PASS.
+
+- Force pulling the latest observium image from docker hub web site. It is to ensure that you will get the latest one.
+```
+  $ docker-compose pull
+```
 
 - Run both database and observium containers.
 ```
   $ docker-compose up
 ```
 
+- For your first time, you may add a new device, discover and poll that device. It is given an idea below (I follow https://docs.observium.org/install_debian/#perform-initial-discovery-and-poll).
+```
+  $ docker-compose exec app /opt/observium/add_device.php <hostname> <community> v2c
+  $ docker-compose exec app /opt/observium/discovery.php -h all
+  $ docker-compose exec app /opt/observium/poller.php -h all
+```
+
 ## Changes
+- [2021-08-26] Built docker image with Observium CE 20.9.10731 on AMD64 platform only
+  - Upgraded base image to ubuntu:20.04
+  - Upgraded package to higher version with following Observium installation document, e.g. php-7.4
+  - Revised docker-compose.yml file and add .env file for specific project name (see source repository below)
 - [2020-02-16] Enhanced docker image with Observium CE 19.8.10000
   - Revised initial/kickstart script for first time of container running with more information about database initialization.
   - Moved Apache http access and error logs to /opt/observium/logs directory.
@@ -79,6 +97,12 @@ Either follow the choice A. or B. below to run Observium.
 
 ## Source Repository
 See source of project at https://github.com/somsakc/observium
+
+## TODOs
+I have a lot of plan to enhance this project. However, my work is priority to focus first. I hope I will have more time to do it.
+- Enhance more on Kubernetes platform, for both AMD64 and ARM64 (Pi).
+- Enhance more with secure TLS to Observium GUI.
+- Secure more container image.
 
 ## Credits
 - Official Observium web site [https://www.observium.org]
