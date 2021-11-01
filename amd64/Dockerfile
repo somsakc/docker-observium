@@ -33,7 +33,7 @@
 FROM ubuntu:20.04
 
 LABEL maintainer "somsakc@hotmail.com"
-LABEL version="1.4"
+LABEL version="1.5"
 LABEL description="Docker container for Observium Community Edition"
 
 ARG OBSERVIUM_ADMIN_USER=admin
@@ -54,7 +54,7 @@ ENV OBSERVIUM_DB_NAME=$OBSERVIUM_DB_NAME
 # install prerequisites and cleanup
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get update && \
-    apt-get install -y libapache2-mod-php7.4 php7.4-cli php7.4-mysql php7.4-mysqli php7.4-gd php7.4-json php-pear snmp fping mysql-server mysql-client python3-mysqldb rrdtool subversion whois mtr-tiny ipmitool graphviz imagemagick apache2 python3-pymysql python-is-python3 && \
+    apt-get install -y libapache2-mod-php7.4 php7.4-cli php7.4-mysql php7.4-mysqli php7.4-gd php7.4-json php-pear snmp fping mysql-server mysql-client python3-mysqldb rrdtool subversion whois mtr-tiny ipmitool graphviz imagemagick apache2 python3-pymysql python-is-python3 monitoring-plugins-basic monitoring-plugins-common monitoring-plugins-standard && \
     apt-get install -y libvirt-clients && \
     apt-get install -y cron curl locales supervisor wget && \
     apt-get clean && \

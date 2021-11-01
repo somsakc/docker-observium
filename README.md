@@ -77,6 +77,8 @@ Either follow the choice A. or B. below to run Observium.
 ```
 
 ## Changes
+- [2021-11-01] Built docker image with Observium CE 21.10.11666 on AMD64 platform only
+  - Added monitoring-plugins-basic, monitoring-plugins-common and monitoring-plugins-standard packages
 - [2021-08-26] Built docker image with Observium CE 20.9.10731 on AMD64 platform only
   - Upgraded base image to ubuntu:20.04
   - Upgraded package to higher version with following Observium installation document, e.g. php-7.4
