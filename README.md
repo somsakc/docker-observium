@@ -103,6 +103,7 @@ I have a lot of plan to enhance this project. However, my work is priority to fo
 - Enhance more on Kubernetes platform, for both AMD64 and ARM64 (Pi).
 - Enhance more with secure TLS to Observium GUI.
 - Secure more container image.
+- Integrate rsyslog [2022/Q3]
 
 ## Credits
 - Official Observium web site [https://www.observium.org]

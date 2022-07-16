@@ -57,6 +57,8 @@ RUN apt-get update && \
     apt-get install -y libapache2-mod-php7.4 php7.4-cli php7.4-mysql php7.4-mysqli php7.4-gd php7.4-json php-pear snmp fping mysql-server mysql-client python3-mysqldb rrdtool subversion whois mtr-tiny ipmitool graphviz imagemagick apache2 python3-pymysql python-is-python3 monitoring-plugins-basic monitoring-plugins-common monitoring-plugins-standard && \
     apt-get install -y libvirt-clients && \
     apt-get install -y cron curl locales supervisor wget && \
+    apt-get install -y logrotate && \
+    apt-get install -y libphp-phpmailer && \
     apt-get clean && \
     rm -f /etc/apache2/sites-available/* && \
     rm -f /etc/cron.d/* && \
