@@ -19,7 +19,7 @@ services:
     restart: always
 
   app:
-    image: mbixtech/observium:20.9
+    image: mbixtech/observium:22.5
     environment:
       - OBSERVIUM_ADMIN_USER=admin
       - OBSERVIUM_ADMIN_PASS=passw0rd
