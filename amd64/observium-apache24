@@ -2,17 +2,17 @@
     ServerAdmin webmaster@localhost
     DocumentRoot /opt/observium/html
     <FilesMatch \.php$>
-      SetHandler application/x-httpd-php
+        SetHandler application/x-httpd-php
     </FilesMatch>
     <Directory />
-            Options FollowSymLinks
-            AllowOverride None
+        Options FollowSymLinks
+        AllowOverride None
     </Directory>
     <Directory /opt/observium/html/>
-            DirectoryIndex index.php
-            Options Indexes FollowSymLinks MultiViews
-            AllowOverride All
-            Require all granted
+        DirectoryIndex index.php
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
     </Directory>
     ErrorLog /opt/observium/logs/apache2-error.log
     LogLevel warn
