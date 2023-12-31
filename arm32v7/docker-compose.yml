@@ -5,41 +5,50 @@ version: '3'
 
 services:
   observiumdb:
-       image: jsurf/rpi-mariadb:latest
-       environment:
-         - MYSQL_ROOT_PASSWORD=passw0rd
-         - MYSQL_USER=observium
-         - MYSQL_PASSWORD=passw0rd
-         - MYSQL_DATABASE=observium
-         - TZ=Asia/Bangkok
-       volumes:
-         - ./data:/var/lib/mysql
-       networks:
-         - back-tier
-       restart: always
+    image: jsurf/rpi-mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=passw0rd
+      - MYSQL_USER=observium
+      - MYSQL_PASSWORD=passw0rd
+      - MYSQL_DATABASE=observium
+      - TZ=Asia/Bangkok
+    volumes:
+      - ./data:/var/lib/mysql
+    networks:
+      - back-tier
+    restart: always
 
   observiumap:
-       image: mbixtech/arm32v7-observium:latest
-       environment:
-         - OBSERVIUM_ADMIN_USER=admin
-         - OBSERVIUM_ADMIN_PASS=passw0rd
-         - OBSERVIUM_DB_HOST=observiumdb
-         - OBSERVIUM_DB_NAME=observium
-         - OBSERVIUM_DB_USER=observium 
-         - OBSERVIUM_DB_PASS=passw0rd
-         - OBSERVIUM_BASE_URL=http://observium-rpi.mbixtech.com:8888
-         - TZ=Asia/Bangkok
-       volumes:
-         - ./logs:/opt/observium/logs
-         - ./rrd:/opt/observium/rrd
-       networks:
-         - back-tier
-       ports:
-         - "8888:80"
-       restart: always
-       depends_on:
-         - observiumdb
+    # Launch published image.
+    image: mbixtech/arm32v7-observium:latest
+
+    # Or build image.
+    # build:
+    #   args:
+    #     # Build specific version or "latest".
+    #     # - FETCH_VERSION=22.12
+    #     - FETCH_VERSION=latest
+
+    environment:
+      - OBSERVIUM_ADMIN_USER=admin
+      - OBSERVIUM_ADMIN_PASS=passw0rd
+      - OBSERVIUM_DB_HOST=observiumdb
+      - OBSERVIUM_DB_NAME=observium
+      - OBSERVIUM_DB_USER=observium
+      - OBSERVIUM_DB_PASS=passw0rd
+      - OBSERVIUM_BASE_URL=http://observium-rpi.mbixtech.com:8888
+      - TZ=Asia/Bangkok
+    volumes:
+      - ./logs:/opt/observium/logs
+      - ./rrd:/opt/observium/rrd
+    networks:
+      - back-tier
+    ports:
+      - "8888:80"
+    restart: always
+    depends_on:
+      - observiumdb
 
 networks:
   back-tier:
-      driver: bridge
+    driver: bridge

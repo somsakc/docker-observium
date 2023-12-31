@@ -28,14 +28,11 @@
 #
 # References:
 #  - Follow platform guideline specified in https://github.com/docker-library/official-images
-# 
+#
 
 FROM ubuntu:16.04
 
-LABEL maintainer "somsakc@hotmail.com"
-LABEL version="1.3"
-LABEL description="Docker container for Observium Community Edition"
-
+ARG FETCH_VERSION=latest
 ARG OBSERVIUM_ADMIN_USER=admin
 ARG OBSERVIUM_ADMIN_PASS=passw0rd
 ARG OBSERVIUM_DB_HOST=observiumdb
@@ -43,9 +40,15 @@ ARG OBSERVIUM_DB_USER=observium
 ARG OBSERVIUM_DB_PASS=passw0rd
 ARG OBSERVIUM_DB_NAME=observium
 
+LABEL maintainer "somsakc@hotmail.com"
+LABEL version="1.3"
+LABEL description="Docker container for Observium Community Edition"
+LABEL fetch_version="$FETCH_VERSION"
+
 # set environment variables
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
+ENV FETCH_VERSION=$FETCH_VERSION
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=$LANG
 ENV OBSERVIUM_DB_HOST=$OBSERVIUM_DB_HOST
 ENV OBSERVIUM_DB_USER=$OBSERVIUM_DB_USER
 ENV OBSERVIUM_DB_PASS=$OBSERVIUM_DB_PASS
@@ -71,14 +74,11 @@ RUN apt-get update && \
     mkdir /var/log/apache2
 
 # set locale
-RUN locale-gen en_US.UTF-8
+RUN locale-gen $LANG
 
 # install observium package
 RUN mkdir -p /opt/observium /opt/observium/logs /opt/observium/rrd && \
-    cd /opt && \
-    wget http://www.observium.org/observium-community-latest.tar.gz && \
-    tar zxvf observium-community-latest.tar.gz && \
-    rm -f observium-community-latest.tar.gz
+    wget -qO - http://www.observium.org/observium-community-${FETCH_VERSION}.tar.gz | tar -zxvf - -C /opt
 
 # configure observium package
 RUN cd /opt/observium && \
@@ -94,9 +94,8 @@ COPY observium-init.sh /opt/observium/observium-init.sh
 RUN chmod a+x /opt/observium/observium-init.sh && \
     chown -R www-data:www-data /opt/observium
 
-# check version and installed files
-RUN [ -f /opt/observium/VERSION ] && cat /opt/observium/VERSION && \
-    find /opt -ls
+# check version
+RUN [ -f /opt/observium/VERSION ] && echo VERSION=$(cat /opt/observium/VERSION)
 
 # configure php modules
 RUN phpenmod mcrypt
