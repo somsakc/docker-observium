@@ -79,6 +79,8 @@ RUN apt install -y  libapache2-mod-php8.1 \
                     php8.1-curl \
                     php-apcu \
                     php-pear \
+                    libphp-phpmailer \
+                    libvirt-clients \
                     snmp \
                     fping \
                     mysql-client \
