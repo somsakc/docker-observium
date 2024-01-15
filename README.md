@@ -78,6 +78,8 @@ Either follow the choice A. or B. below to run Observium.
 ```
 
 ## Changes
+- [2024-01-15] Merge pull request [#35](https://github.com/somsakc/docker-observium/pull/35) into master branch
+  - Fixed TZ parameter in observium-init.sh file
 - [2024-01-14] Merge pull request [#34](https://github.com/somsakc/docker-observium/pull/34) into master branch
   - Upgraded base image from Ubuntu 20.04 to 22.04 (amd64/Dockerfile)
   - Upgraded related packages (e.g. php) to match Ubuntu 22.04 and enhanced build code (amd64/Dockerfile)
