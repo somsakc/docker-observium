@@ -10,7 +10,7 @@ if [ -n "${TZ}" ]; then
    WriteLog "Set timezone to '${TZ}'"
    if [ -f "/usr/share/zoneinfo/${TZ}" ]; then
       echo "${TZ}" > /etc/timezone
-      ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime
+      ln -sf "/usr/share/zoneinfo/${TZ}" /etc/localtime
    else
       WriteLog "Invalid specific $TZ timezone and use the default of `cat /etc/timezone` instead."
    fi
