@@ -1,7 +1,5 @@
-# Docker compose file for Observium
+# Example Docker Compose file for Observium
 # Maintained by somsakc@hotmail.com
-
-version: '3'
 
 services:
   observiumdb:
@@ -16,17 +14,17 @@ services:
       - ./data:/var/lib/mysql
     networks:
       - back-tier
-    restart: always
+    restart: unless-stopped
 
   observiumap:
     # Launch published image.
     image: mbixtech/arm32v7-observium:latest
 
-    # Or build image.
+    # Or build image:
     # build:
     #   args:
     #     # Build specific version or "latest".
-    #     # - FETCH_VERSION=22.12
+    #     # - FETCH_VERSION=24.12
     #     - FETCH_VERSION=latest
 
     environment:
@@ -36,7 +34,7 @@ services:
       - OBSERVIUM_DB_NAME=observium
       - OBSERVIUM_DB_USER=observium
       - OBSERVIUM_DB_PASS=passw0rd
-      - OBSERVIUM_BASE_URL=http://observium-rpi.mbixtech.com:8888
+      - OBSERVIUM_BASE_URL=http://yourservername:8888
       - TZ=Asia/Bangkok
     volumes:
       - ./logs:/opt/observium/logs
@@ -45,7 +43,7 @@ services:
       - back-tier
     ports:
       - "8888:80"
-    restart: always
+    restart: unless-stopped
     depends_on:
       - observiumdb
 
