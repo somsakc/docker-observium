@@ -1,11 +1,9 @@
-# Docker compose file for Observium
+# Docker Compose file for Observium
 # Maintained by somsakc@hotmail.com
-
-version: '3'
 
 services:
   db:
-    image: mariadb:10.6.4
+    image: mariadb:11.7
     environment:
       - MYSQL_ROOT_PASSWORD=passw0rd
       - MYSQL_USER=observium
@@ -16,10 +14,10 @@ services:
       - ./data:/var/lib/mysql
     networks:
       - back-tier
-    restart: always
+    restart: unless-stopped
 
   app:
-    image: mbixtech/observium:21.10
+    image: mbixtech/observium:24.12
     environment:
       - OBSERVIUM_ADMIN_USER=admin
       - OBSERVIUM_ADMIN_PASS=passw0rd
@@ -36,7 +34,7 @@ services:
       - back-tier
     ports:
       - "8888:80"
-    restart: always
+    restart: unless-stopped
     depends_on:
       - db
 
