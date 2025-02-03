@@ -75,19 +75,19 @@ Either follow the choice A. or B. below to run Observium.
 
 - Force pulling the latest Observium image from docker hub web site. It is to ensure that you will get the latest one.
 ```sh
-  $ docker-compose pull
+  $ docker compose pull
 ```
 
 - Run both database and Observium containers.
 ```sh
-  $ docker-compose up
+  $ docker compose up
 ```
 
 - For your first time, you may add a new device, discover and poll that device. It is given an idea below (I follow https://docs.observium.org/install_debian/#perform-initial-discovery-and-poll).
 ```sh
-  $ docker-compose exec app /opt/observium/add_device.php <hostname> <community> v2c
-  $ docker-compose exec app /opt/observium/discovery.php -h all
-  $ docker-compose exec app /opt/observium/poller.php -h all
+  $ docker compose exec app /opt/observium/add_device.php <hostname> <community> v2c
+  $ docker compose exec app /opt/observium/discovery.php -h all
+  $ docker compose exec app /opt/observium/poller.php -h all
 ```
 
 ## Changes
