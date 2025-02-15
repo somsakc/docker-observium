@@ -91,6 +91,11 @@ Either follow the choice A. or B. below to run Observium.
 ```
 
 ## Changes
+- [2025-02-15] Merge pull request [#36](https://github.com/somsakc/docker-observium/pull/36) into master branch
+  - Upgraded base image to Ubuntu 24.04 (amd64/Dockerfile)
+  - Supports running latest Observium 24.12 (amd64/Dockerfile)
+  - Update docker-compose.yml for recommended best practices
+  - Update README.md with build image instructions
 - [2024-01-15] Merge pull request [#35](https://github.com/somsakc/docker-observium/pull/35) into master branch
   - Fixed TZ parameter in observium-init.sh file
 - [2024-01-14] Merge pull request [#34](https://github.com/somsakc/docker-observium/pull/34) into master branch
